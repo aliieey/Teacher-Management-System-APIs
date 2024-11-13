@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const app = express();
-const PORT = 9000;
+const PORT = 8000;
 const mysecretkey = "Abc123";
 app.use(cors());
 app.use(express.json());
