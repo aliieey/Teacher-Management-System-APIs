@@ -369,6 +369,18 @@ app.get("/teacher/:teacherId/students", check, async (req, res) => {
     }
 });
 
+app.get("/student/courses", check, async (req, res) => {
+    const studentId = req.user.id;
+    console.log(studentId)
+    try {
+        const courses = await Course.find({ studentId: studentId });
+        res.status(200).json({ courses });
+    } catch (error) {
+        console.error("Error fetching courses:", error);
+        res.status(400).send("Error fetching courses: " + error.message);
+    }
+});
+
 app.get("/protected", check, (req, res) => {
     res.status(200).json({
         message: "This is a protected route",
