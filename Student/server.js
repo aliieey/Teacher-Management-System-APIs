@@ -199,6 +199,28 @@ app.post("/create-student", Authenticate, async (req, res) => {
   });
 
 
+  app.post("/loginstudent", async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        let user = await Student.findOne({ email });
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        if (user.password !== password) {
+            return res.status(401).send("Invalid password");
+        }
+        const token = jwt.sign({ email: user.email,password:password,id:user._id }, Secret);
+        res.status(200).json({
+            message: "Student is logged in",
+            token: token
+        });
+    } catch (error) {
+        console.error("Error logging in user:", error);
+        res.status(400).send("Error logging in user: " + error.message);
+    }
+});
+
+
 app.post("/student/:studentId/update", Authenticate, async (req, res) => {
     const { studentId } = req.params;
     const { name, email, dob, batch, password } = req.body;
